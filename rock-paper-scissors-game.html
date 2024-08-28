@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60vw;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .choice {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .choice:hover {
+            background-color: #e0e0e0;
+        }
+
+        .choice svg,
+        .choice embed,
+        .choice img {
+            width: 50px;
+            height: 50px;
+        }
+
+
+
+        #result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        #score {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        #computer-choice,
+        #player-choice {
+            margin-top: 1rem;
+        }
+
+        #computer-choice svg,
+        #computer-choice img,
+        #player-choice svg,
+        #player-choice img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .battle-animation {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+            height: 100px;
+        }
+
+        .battle-animation.show {
+            opacity: 1;
+        }
+
+        #player-choice,
+        #computer-choice {
+            width: 200px;
+            transform: scale(0);
+            transition: transform 0.5s;
+        }
+
+        #player-choice.show,
+        #computer-choice.show {
+            transform: scale(1);
+        }
+
+        #vs {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>Rock Paper Scissors</h1>
+        <div class="choices">
+            <button class="choice" onclick="play('rock')">
+                <img src="hand-rock-svgrepo-com.svg" alt="Rock" />
+            </button>
+            <button class="choice" onclick="play('paper')">
+                <img src="hand-paper-svgrepo-com.svg" alt="Paper" />
+            </button>
+            <button class="choice" onclick="play('scissors')">
+                <img src="hand-scissors-svgrepo-com.svg" alt="Scissors" />
+            </button>
+        </div>
+        <!-- <div id="result"></div>
+        <div id="score">Score: Player 0 - 0 Computer</div>
+        <div id="computer-choice"></div> -->
+
+        <div id="battle-animation" class="battle-animation">
+            <div id="player-choice"></div>
+            <div id="vs">VS</div>
+            <div id="computer-choice"></div>
+        </div>
+        <div id="result"></div>
+        <div id="score">Score: Player 0 - 0 Computer</div>
+    </div>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+
+        const svgIcons = {
+            rock: '<img src="hand-rock-svgrepo-com.svg" alt="Rock" />',
+            paper: '<img src="hand-paper-svgrepo-com.svg" alt="Paper" />',
+            scissors: '<img src="hand-scissors-svgrepo-com.svg" alt="Scissors" />'
+        };
+
+        function play(playerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+            document.getElementById('player-choice').innerHTML = svgIcons[playerChoice];
+            document.getElementById('computer-choice').innerHTML = svgIcons[computerChoice];
+
+            // animation start
+            const battleAnimation = document.getElementById('battle-animation');
+            battleAnimation.classList.add('show');
+            setTimeout(() => {
+                document.getElementById('player-choice').classList.add('show');
+                document.getElementById('computer-choice').classList.add('show');
+            }, 100);
+
+            // winner logic
+            let result;
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                3
+
+                result = "You win!";
+                playerScore++;
+            } else {
+                result = "Computer wins!";
+                computerScore++;
+            }
+
+            // show result
+            document.getElementById('result').textContent = `You chose ${playerChoice}. Computer chose ${computerChoice}. ${result}`;
+            document.getElementById('score').textContent = `Score: Player ${playerScore} - ${computerScore} Computer`;
+            document.getElementById('player-choice').innerHTML = `Your choice:<br>${svgIcons[playerChoice]}`;
+            document.getElementById('computer-choice').innerHTML = `Computer's choice:<br>${svgIcons[computerChoice]}`;
+
+            // animation end
+            setTimeout(() => {
+                battleAnimation.classList.remove('show');
+                document.getElementById('player-choice').classList.remove('show');
+                document.getElementById('computer-choice').classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
